@@ -45,9 +45,9 @@ def get_matches(with_team_stats=False, duplicate_with_reversed=False):
         else:
             return 1
 
-    matches['score_diff'] = matches['score1'] - matches['score2']
-    matches = matches[matches['score_diff'] != 0]  # remove ties
-    matches['winner'] = matches['score_diff'].map(winner_from_score_diff)
+    matches['score_diff'] = matches.score1 - matches.score2
+    matches = matches[matches.score_diff != 0]  # remove ties
+    matches['winner'] = matches.score_diff.map(winner_from_score_diff)
 
     if with_team_stats:
         stats = get_team_stats()
@@ -99,9 +99,9 @@ def get_team_stats():
 
         stats.loc[team, 'cups_won'] = len(team_podiums[team_podiums.position == 1])
 
-    stats['matches_won_percent'] = stats['matches_won'] / stats['matches_played'] * 100.0
-    stats['podium_score_yearly'] = stats['podium_score'] / stats['years_played']
-    stats['cups_won_yearly'] = stats['cups_won'] / stats['years_played']
+    stats['matches_won_percent'] = stats.matches_won / stats.matches_played * 100
+    stats['podium_score_yearly'] = stats.podium_score / stats.years_played
+    stats['cups_won_yearly'] = stats.cups_won / stats.years_played
 
     return stats
 
